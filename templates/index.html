@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Generador de Presupuestos</title>
+</head>
+<body>
+    <h1>Generar Presupuestos</h1>
+
+    <p>Seleccioná qué tipo de presupuesto querés generar:</p>
+
+    <ul>
+        {% for tipo in tipos %}
+        <li>
+            <a href="{{ url_for('formulario', tipo=tipo) }}">
+                {{ tipo.capitalize() }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <a href="{{ url_for('resumen') }}">📊 Descargar resumen general</a>
+</body>
+</html>

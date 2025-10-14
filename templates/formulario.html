@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario {{ tipo }}</title>
+</head>
+<body>
+    <h1>Presupuesto de {{ tipo.capitalize() }}</h1>
+
+    <form action="{{ url_for('agregar') }}" method="POST">
+        <input type="hidden" name="tipo" value="{{ tipo }}">
+
+        {% for campo in campos %}
+            <label>{{ campo }}:</label>
+            <input type="text" name="{{ campo }}"><br>
+        {% endfor %}
+
+        <br>
+        <button type="submit">Generar planilla</button>
+    </form>
+
+    <hr>
+    <a href="{{ url_for('index') }}">⬅️ Volver al inicio</a>
+</body>
+</html>
