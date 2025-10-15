@@ -3,23 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulario {{ tipo }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        .ubicacion {
+            background: #f0f8ff;
+            border: 1px solid #0077cc;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: inline-block;
+            font-weight: bold;
+            color: #004a80;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Presupuesto de {{ tipo.capitalize() }}</h1>
+    <h1>Formulario de {{ tipo.capitalize() }}</h1>
+    <div class="ubicacion">📍 Ubicación: {{ session['ubicacion'] }}</div>
 
     <form action="{{ url_for('agregar') }}" method="POST">
         <input type="hidden" name="tipo" value="{{ tipo }}">
 
         {% for campo in campos %}
-            <label>{{ campo }}:</label>
-            <input type="text" name="{{ campo }}"><br>
+        <label>{{ campo }}:</label>
+        <input type="text" name="{{ campo }}">
         {% endfor %}
 
-        <br>
-        <button type="submit">Generar planilla</button>
+        <br><br>
+        <button type="submit">Generar presupuesto</button>
     </form>
 
     <hr>
-    <a href="{{ url_for('index') }}">⬅️ Volver al inicio</a>
+    <a href="{{ url_for('menu') }}">⬅ Volver al menú</a>
 </body>
 </html>

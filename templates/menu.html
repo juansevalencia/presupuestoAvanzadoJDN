@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tipos de Presupuesto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        .ubicacion {
+            background: #f0f8ff;
+            border: 1px solid #0077cc;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: inline-block;
+            font-weight: bold;
+            color: #004a80;
+        }
+    </style>
+</head>
+<body>
+    <h1>Presupuestos para obra</h1>
+    <div class="ubicacion">📍 Ubicación: {{ ubicacion }}</div>
+
+    <p>Elegí qué tipo de presupuesto querés generar:</p>
+    <ul>
+        {% for tipo in tipos %}
+        <li><a href="{{ url_for('formulario', tipo=tipo) }}">{{ tipo.capitalize() }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+    <a href="{{ url_for('resumen') }}">📊 Descargar resumen general</a>
+</body>
+</html>
