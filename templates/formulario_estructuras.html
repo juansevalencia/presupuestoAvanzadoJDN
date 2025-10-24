@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Presupuesto de Estructuras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        h3 {
+            color: #34495e;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        label {
+            display: inline-block;
+            width: 180px;
+            margin-bottom: 8px;
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 120px;
+        }
+
+        .inline-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        input[type="submit"] {
+            background-color: #2ecc71;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Presupuesto de Estructuras</h2>
+
+    <form action="/agregar_estructuras" method="post">
+        
+        <div class="section">
+            <h3>Muelle</h3>
+            <label>Largo:</label> <input name="muelle_largo" type="number" step="0.01"><br>
+            <label>Ancho:</label> <input name="muelle_ancho" type="number" step="0.01"><br>
+
+            <div class="inline-group">
+                <label>Pulgadas Columnas:</label>
+                <input name="pulgadas_columnas_a" type="number" step="0.01"> x 
+                <input name="pulgadas_columnas_b" type="number" step="0.01">
+            </div>
+
+            <div class="inline-group">
+                <label>Pulgadas Clavaderas:</label>
+                <input name="pulgadas_clavaderas_a" type="number" step="0.01"> x 
+                <input name="pulgadas_clavaderas_b" type="number" step="0.01">
+            </div>
+
+            <div class="inline-group">
+                <label>Pulgadas Soleras:</label>
+                <input name="pulgadas_soleras_a" type="number" step="0.01"> x 
+                <input name="pulgadas_soleras_b" type="number" step="0.01">
+            </div>
+
+            <label>Material:</label> <input name="material" type="text"><br>
+            <label>Precio unitario:</label> <input name="muelle_precio" type="number" step="0.01"><br>
+            <label>Cantidad:</label> <input name="muelle_cantidad" type="number"><br>
+        </div>
+
+        <div class="section">
+            <h3>Descanso</h3>
+            <label>Largo:</label> <input name="descanso_largo" type="number" step="0.01"><br>
+            <label>Ancho:</label> <input name="descanso_ancho" type="number" step="0.01"><br>
+            <label>Estructura (dejar vacío si es igual):</label> <input name="estructura_descanso" type="text"><br>
+            <label>Precio unitario:</label> <input name="descanso_precio" type="number" step="0.01"><br>
+            <label>Cantidad:</label> <input name="descanso_cantidad" type="number"><br>
+        </div>
+
+        <div class="section">
+            <h3>Rampa</h3>
+            <label>Largo:</label> <input name="rampa_largo" type="number" step="0.01"><br>
+            <label>Ancho:</label> <input name="rampa_ancho" type="number" step="0.01"><br>
+            <label>Estructura (dejar vacío si es igual):</label> <input name="estructura_rampa" type="text"><br>
+            <label>Precio unitario:</label> <input name="rampa_precio" type="number" step="0.01"><br>
+            <label>Cantidad:</label> <input name="rampa_cantidad" type="number"><br>
+        </div>
+
+        <div class="section">
+            <h3>Pérgola</h3>
+            <label>Largo:</label> <input name="pergola_largo" type="number" step="0.01"><br>
+            <label>Ancho:</label> <input name="pergola_ancho" type="number" step="0.01"><br>
+            <label>Estructura (dejar vacío si es igual):</label> <input name="estructura_pergola" type="text"><br>
+            <label>Precio unitario:</label> <input name="pergola_precio" type="number" step="0.01"><br>
+            <label>Cantidad:</label> <input name="pergola_cantidad" type="number"><br>
+        </div>
+
+        <br>
+        <center><input type="submit" value="Generar Excel"></center>
+    </form>
+
+</body>
+</html>

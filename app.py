@@ -36,10 +36,13 @@ PRESUPUESTOS = {
     "riego": {
         "plantilla": "plantillas/riego.xlsx",
         "campos": {
-            "Costo Materiales de reigo": "D10",
+            "Costo Materiales de riego": "D10",
             "Precio Automatizacion": "D11",
             "Precio Mano de obra": "D12",
         },
+    },
+    "estructuras": {
+        "plantilla": "plantillas/estructuras.xlsx"
     },
 }
 
@@ -191,6 +194,81 @@ def resumen():
     resumen_filename = "resumen_general.xlsx"
     wb.save(resumen_filename)
     return send_file(resumen_filename, as_attachment=True)
+
+@app.route("/estructuras", methods=["GET"])
+def estructuras():
+    return render_template("estructuras.html")  # tu HTML nuevo
+
+@app.route("/agregar_estructuras", methods=["POST"])
+def agregar_estructuras():
+    conf = PRESUPUESTOS["estructuras"]
+    ubicacion = session.get("ubicacion", "Sin ubicación")
+
+    wb = load_workbook(conf["plantilla"])
+    ws = wb.active
+
+    ws["A3"] = f"Estructuras - {ubicacion}"
+    ws["A5"] = date.today().strftime("%d/%m/%Y")
+
+    estructuras = ["muelle", "descanso", "rampa", "pergola"]
+    fila = 10
+    total_general = 0
+
+    for tipo in estructuras:
+        largo = request.form.get(f"{tipo}_largo")
+        ancho = request.form.get(f"{tipo}_ancho")
+        precio = request.form.get(f"{tipo}_precio")
+        cantidad = request.form.get(f"{tipo}_cantidad")
+
+        # solo para el muelle, también toma las pulgadas y material
+        if tipo == "muelle":
+            columnas_a = request.form.get("pulgadas_columnas_a")
+            columnas_b = request.form.get("pulgadas_columnas_b")
+            clavaderas_a = request.form.get("pulgadas_clavaderas_a")
+            clavaderas_b = request.form.get("pulgadas_clavaderas_b")
+            soleras_a = request.form.get("pulgadas_soleras_a")
+            soleras_b = request.form.get("pulgadas_soleras_b")
+            material = request.form.get("material", "")
+
+            detalle = (
+                f"Muelle de {largo} x {ancho} m, "
+                f"columnas de {columnas_a}x{columnas_b} pulg, "
+                f"clavaderas de {clavaderas_a}x{clavaderas_b} pulg, "
+                f"soleras de {soleras_a}x{soleras_b} pulg, "
+                f"material: {material}"
+            )
+        else:
+            detalle = f"{tipo.capitalize()} de {largo} x {ancho} m"
+
+        # si no hay valores básicos, se saltea
+        if not (largo and ancho and precio and cantidad):
+            continue
+
+        largo = float(largo)
+        ancho = float(ancho)
+        precio = float(precio)
+        cantidad = float(cantidad)
+        total = precio * cantidad
+
+        ws[f"C{fila}"] = detalle
+        ws[f"D{fila}"] = precio
+        ws[f"B{fila}"] = cantidad
+        ws[f"H{fila}"] = total
+        fila += 2  # espacio entre estructuras
+
+        total_general += total
+
+    nombre_archivo = f"estructuras_{ubicacion}.xlsx"
+    wb.save(nombre_archivo)
+
+    # guardar en sesión para el resumen general
+    if "resumen" not in session:
+        session["resumen"] = {}
+
+    session["resumen"]["total_estructuras"] = total_general
+    session.modified = True
+
+    return send_file(nombre_archivo, as_attachment=True)
 
 
 if __name__ == "__main__":
