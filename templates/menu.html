@@ -24,11 +24,17 @@
     <div class="ubicacion">📍 Ubicación: {{ ubicacion }}</div>
 
     <p>Elegí qué tipo de presupuesto querés generar:</p>
-    <ul>
-        {% for tipo in tipos %}
-        <li><a href="{{ url_for('formulario', tipo=tipo) }}">{{ tipo.capitalize() }}</a></li>
-        {% endfor %}
-    </ul>
+   <ul>
+    {% for tipo in tipos %}
+        {% if tipo != 'estructuras' %}
+            <li><a href="{{ url_for('formulario', tipo=tipo) }}">{{ tipo.capitalize() }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    <!-- Estructuras tiene su propia ruta -->
+    <li><a href="{{ url_for('estructuras') }}">Estructuras</a></li>
+</ul>
+
 
     <hr>
     <a href="{{ url_for('resumen') }}">📊 Descargar resumen general</a>

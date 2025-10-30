@@ -121,7 +121,7 @@ def generar_riego(data):
 
     try:
         total = (
-            float(data.get("Costo Materiales de reigo", 0))
+            float(data.get("Costo Materiales de riego", 0))
             + float(data.get("Precio Automatizacion", 0))
             + float(data.get("Precio Mano de obra", 0))
         )
@@ -147,6 +147,10 @@ def index():
 @app.route("/menu")
 def menu():
     return render_template("menu.html", tipos=PRESUPUESTOS.keys(), ubicacion=session.get("ubicacion", ""))
+
+@app.route("/estructuras", methods=["GET"])
+def estructuras():
+    return render_template("formulario_estructuras.html")  # tu HTML nuevo
 
 
 @app.route("/formulario/<tipo>")
@@ -194,10 +198,6 @@ def resumen():
     resumen_filename = "resumen_general.xlsx"
     wb.save(resumen_filename)
     return send_file(resumen_filename, as_attachment=True)
-
-@app.route("/estructuras", methods=["GET"])
-def estructuras():
-    return render_template("estructuras.html")  # tu HTML nuevo
 
 @app.route("/agregar_estructuras", methods=["POST"])
 def agregar_estructuras():
