@@ -56,34 +56,48 @@ def completar_planilla(plantilla, data):
     return wb, ws
 
 
-# 🔹 Funciones por tipo de presupuesto
 def generar_estacado(data):
     conf = PRESUPUESTOS["estacado"]
-    
+
     wb = load_workbook(conf["plantilla"])
     ws = wb.active
+
     ubicacion = session.get("ubicacion", "")
     ws["A3"] = ubicacion
-    for campo, celda in conf["campos"].items():
-        if campo in data and data[campo]:
-            ws[celda] = data[campo]
     ws["A5"] = date.today().strftime("%d/%m/%Y")
-    
-    ws["D17"] = "Total"
-    ws["D17"].font = Font(bold=True, size=20)
+
+    # --- Cargar datos ---
+    for campo, celda in conf["campos"].items():
+        valor = data.get(campo)
+
+        if not valor:
+            continue
+
+        try:
+            #convertir a número si corresponde
+            valor_num = float(valor)
+            ws[celda] = valor_num
+
+           
+            if celda in ("D11", "D13"):
+                ws[celda].number_format = '"$"#,##0.00'
+        except ValueError:
+            # texto
+            ws[celda] = valor
 
     estacado_metros = float(data.get("Estacado Metros lineales") or 0)
     estacado_precio = float(data.get("Estacado Precio Unitario") or 0)
-    escalones_cantidad = float(data.get("Escalones cantidad"))
-    escalones_precio = float(data.get("Escalones Precio Unitario"))
-    
-    ws["D11"].number_format = '"$"#,##0.00'
-    ws["D13"].number_format = '"$"#,##0.00'
-    
-    total = estacado_metros * estacado_precio + escalones_cantidad*escalones_precio 
+    escalones_cantidad = float(data.get("Escalones cantidad") or 0)
+    escalones_precio = float(data.get("Escalones Precio Unitario") or 0)
+
+    total = (
+        estacado_metros * estacado_precio
+        + escalones_cantidad * escalones_precio
+    )
 
     nombre_archivo = f"estacado_{ubicacion}.xlsx"
     wb.save(nombre_archivo)
+
     return nombre_archivo, total
 
 
@@ -248,7 +262,7 @@ def agregar_estructuras():
         else:
             detalle = f"{tipo.capitalize()} de {largo} x {ancho} m"
 
-        # si no hay valores básicos, se saltea
+        # si no hay saltea
         if not (largo and ancho and precio and cantidad):
             continue
 
@@ -269,7 +283,7 @@ def agregar_estructuras():
     nombre_archivo = f"estructuras_{ubicacion}.xlsx"
     wb.save(nombre_archivo)
 
-    # guardar en sesión para el resumen general
+    #guarda en sesión
     if "resumen" not in session:
         session["resumen"] = {}
 
