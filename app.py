@@ -68,11 +68,17 @@ def generar_estacado(data):
         if campo in data and data[campo]:
             ws[celda] = data[campo]
     ws["A5"] = date.today().strftime("%d/%m/%Y")
+    
+    ws["D17"] = "Total"
+    ws["D17"].font = Font(bold=True, size=20)
 
     estacado_metros = float(data.get("Estacado Metros lineales") or 0)
     estacado_precio = float(data.get("Estacado Precio Unitario") or 0)
     escalones_cantidad = float(data.get("Escalones cantidad"))
     escalones_precio = float(data.get("Escalones Precio Unitario"))
+    
+    ws["D11"].number_format = '"$"#,##0.00'
+    ws["D13"].number_format = '"$"#,##0.00'
     
     total = estacado_metros * estacado_precio + escalones_cantidad*escalones_precio 
 
