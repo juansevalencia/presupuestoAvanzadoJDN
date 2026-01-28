@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, send_file, session, redirect, url_for
 from openpyxl import load_workbook
+from openpyxl.styles import Font
 from datetime import date
 import os
 
@@ -58,7 +59,6 @@ def completar_planilla(plantilla, data):
 # 🔹 Funciones por tipo de presupuesto
 def generar_estacado(data):
     conf = PRESUPUESTOS["estacado"]
-    print("USANDO PLANTILLA:", os.path.abspath(conf["plantilla"]))
     
     wb = load_workbook(conf["plantilla"])
     ws = wb.active
