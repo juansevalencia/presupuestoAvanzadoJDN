@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+
+# Entornos virtuales
+.venv/
+venv/
+
+# Archivos lock de LibreOffice / Excel
+.~lock.*#
+
+# Archivos temporales
+*.tmp
+
