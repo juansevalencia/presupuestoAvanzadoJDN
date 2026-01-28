@@ -58,6 +58,8 @@ def completar_planilla(plantilla, data):
 # 🔹 Funciones por tipo de presupuesto
 def generar_estacado(data):
     conf = PRESUPUESTOS["estacado"]
+    print("USANDO PLANTILLA:", os.path.abspath(conf["plantilla"]))
+    
     wb = load_workbook(conf["plantilla"])
     ws = wb.active
     ubicacion = session.get("ubicacion", "")
